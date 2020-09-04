@@ -40,13 +40,13 @@ tags: []
 dependencies: {}
 
 # The URL of the originating SCM repository
-repository: https://github.com/pycontribs/protogen
+repository: https://github.com/ansible-community/protogen
 
 # The URL to any online docs
-documentation: https://github.com/pycontribs/protogen
+documentation: https://github.com/ansible-community/protogen
 
 # The URL to the homepage of the collection/project
-homepage: https://github.com/pycontribs/protogen
+homepage: https://github.com/ansible-community/protogen
 
 # The URL to the collection issue tracker
-issues: https://github.com/pycontribs/issues
+issues: https://github.com/ansible-community/issues
