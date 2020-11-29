@@ -1,7 +1,7 @@
 ---
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks.git
-    rev: v3.1.0
+    rev: v3.3.0
     hooks:
       - id: end-of-file-fixer
       - id: trailing-whitespace
@@ -12,11 +12,11 @@ repos:
       - id: debug-statements
         language_version: python3
   - repo: https://gitlab.com/pycqa/flake8.git
-    rev: 3.7.8
+    rev: 3.8.4
     hooks:
       - id: flake8
   - repo: https://github.com/PyCQA/doc8
-    rev: 0.8.1
+    rev: 0.9.0a1
     hooks:
       - id: doc8
   - repo: https://github.com/openstack-dev/bashate.git
@@ -32,14 +32,14 @@ repos:
         #       error will be discovered in execution anyway)
         entry: bashate --error . --ignore=E006,E040
   - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.23.0
+    rev: v1.25.0
     hooks:
       - id: yamllint
         files: \.(yaml|yml)$
         types: [file, yaml]
         entry: yamllint --strict
   - repo: https://github.com/ansible/ansible-lint
-    rev: v4.3.0a1
+    rev: v4.3.7
     hooks:
       - id: ansible-lint
         always_run: true
