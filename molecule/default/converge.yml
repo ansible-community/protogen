@@ -1,0 +1,10 @@
+---
+- name: Converge
+  hosts: all
+  # helps ansible resolve our role without being forced to use FQRN notation
+  collections:
+    - pycontribs.protogen
+  tasks:
+    - name: "Include ensure_welcome"
+      include_role:
+        name: "ensure_welcome"

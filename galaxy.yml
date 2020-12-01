@@ -50,3 +50,13 @@ homepage: https://github.com/ansible-community/protogen
 
 # The URL to the collection issue tracker
 issues: https://github.com/ansible-community/issues
+
+# that key is not even part of the template:
+build_ignore:
+  - .cache
+  - .github
+  - .gitignore
+  - .pytest_cache
+  - .vscode
+  - dist
+  - tox.ini

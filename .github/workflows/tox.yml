@@ -21,6 +21,10 @@ jobs:
       matrix:
         include:
           - tox_env: lint
+          # TODO(ssbarnea): replace molecule env with default once molecule
+          # will be able to install collection being tested:
+          # https://github.com/ansible-community/molecule/pull/2998
+          - tox_env: molecule
 
     steps:
       - uses: actions/checkout@v1

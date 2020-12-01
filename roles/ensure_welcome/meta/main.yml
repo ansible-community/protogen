@@ -1,0 +1,34 @@
+# TODO(ssbarnea): Most of the fields here are useless when a role is part of
+# a collection, creating an insane amount of duplication.
+galaxy_info:
+  author: Sorin Sbarnea
+  description: This role should display a welcome messsage
+
+  issue_tracker_url: https://github.com/ansible-community/protogen/
+
+  license: MIT
+
+  min_ansible_version: 2.9
+  # If this a Container Enabled role, provide the minimum Ansible Container version.
+  # min_ansible_container_version:
+
+  #
+  # Provide a list of supported platforms, and for each platform a list of versions.
+  # If you don't wish to enumerate all versions for a particular platform, use 'all'.
+  # To view available platforms and versions (or releases), visit:
+  # https://galaxy.ansible.com/api/v1/platforms/
+  #
+  # TODO(ssbarnea): persuade galaxy team to publish a list of generic platforms
+  # content creators can use. The API returned list is unusable for practical
+  # resons.
+  platforms:
+    - name: Fedora
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
+
+  galaxy_tags: []
+
+dependencies: []
