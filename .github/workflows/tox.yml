@@ -13,9 +13,46 @@ on:
     - cron: 1 0 * * *  # Run daily at 0:01 UTC
 
 jobs:
-  build:
+  make:
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: sanity
+          # - name: units
+          # - name: integration
+          # - name: coverage
+    steps:
+      - uses: actions/checkout@v1
+      - name: Run workarounds github-action specific
+        # https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-commands-for-github-actions#environment-files
+        run: |
+          sudo apt-get -qq -y remove --purge ansible
+          mkdir -p ~/.local/bin
+          export PATH=$HOME/.local/bin:$PATH
+          # remove ansible 2.9 which comes free on github actions
+          # assure we have a pip with decent resolver
+          python3 -m pip install "pip>=20.3.1"
+          # lets fix some already missing dependencies from gha ubuntu image
+          pip3 install launchpadlib pygobject
+          # lets see the goodies...
+          pip3 check
+          # to bring pip installed stuff in user PATH, for *subsequent* runs
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+      - name: Run make devenv
+        run: |
+          echo "PATH=$PATH"
+          make devenv
+      - name: Run make install
+        run: |
+          make install
+          make ${{ matrix.name }}
+
+  tox:
     name: ${{ matrix.tox_env }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
@@ -64,7 +101,8 @@ jobs:
   publish:
     name: Publish to PyPI registry
     needs:
-      - build
+      - tox
+      - make
     runs-on: ubuntu-latest
 
     env:
