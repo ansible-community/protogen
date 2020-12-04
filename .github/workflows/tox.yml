@@ -23,7 +23,7 @@ jobs:
           - name: sanity
           - name: units
           # - name: integration
-          # - name: coverage
+          - name: coverage
     steps:
       - uses: actions/checkout@v1
       - name: Run workarounds github-action specific

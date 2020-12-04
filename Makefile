@@ -77,8 +77,10 @@ windows-integration: install  ## windows integration tests [NOT-IMPLEMENTED]
 shell:  ## open an interactive shell
 	$(ANSIBLE_TEST) shell
 
-coverage:  ## code coverage management and reporting [NOT-IMPLEMENTED]
-	$(ANSIBLE_TEST) coverage --requirements
+coverage: units ## code coverage management and reporting
+	$(ANSIBLE_TEST) units --requirements --python $(PYTHON_VERSION) --coverage
+	$(ANSIBLE_TEST) coverage combine
+	$(ANSIBLE_TEST) coverage report
 
 env:  ##  show information about the test environment
 	$(ANSIBLE_TEST) env
