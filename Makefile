@@ -1,6 +1,8 @@
 DESTDIR ?=
 PYTHON ?= $(shell command -v python3 python|head -n1)
+PYTHON_VERSION ?= $(shell $(PYTHON) -c 'import sys; print("%s.%s" % (sys.version_info.major, sys.version_info.minor))')
 PKG_MANAGER ?= $(shell command -v dnf yum|head -n1)
+PIP ?= PIP_DISABLE_VERSION_CHECK=1 $(PYTHON) -m pip
 
 .EXPORT_ALL_VARIABLES:
 
@@ -34,9 +36,11 @@ help:
 
 devenv:	 # Assures we have all pre-requisites for testing
 ifndef HAS_ANSIBLE
-	python3 -m pip install --user "ansible-base>=2.10"
+	$(PIP) install --user "ansible-base>=2.10"
 endif
 	$(ANSIBLE) --version
+	@# too avoid: Could not build wheels for ...
+	python3 -m pip install --user wheel
 
 build: devenv  ## Builds collection
 	sh -c "rm -rf dist/* .cache/collections/* || true"
@@ -54,18 +58,20 @@ test:  ## Runs ansible-test
 
 # BEGIN ansible-test commands
 sanity: install  ## Runs ansible-test sanity
-	$(ANSIBLE_TEST) sanity --requirements
+	@# see https://github.com/ansible/ansible/issues/72854
+	$(PIP) install --user pylint
+	$(ANSIBLE_TEST) sanity --requirements --python $(PYTHON_VERSION)
 
-units:  ## Runs ansible-test units [NOT-IMPLEMENTED]
-	$(ANSIBLE_TEST) units --requirements
+units: install  ## Runs ansible-test units
+	$(ANSIBLE_TEST) units --requirements --python $(PYTHON_VERSION)
 
-integration:  ## posix integration tests [NOT-IMPLEMENTED]
+integration: install  ## posix integration tests [NOT-IMPLEMENTED]
 	$(ANSIBLE_TEST) integration --requirements
 
-network-integration:  ## network integration tests [NOT-IMPLEMENTED]
+network-integration: install  ## network integration tests [NOT-IMPLEMENTED]
 	$(ANSIBLE_TEST) network-integration --requirements
 
-windows-integration:  ## windows integration tests [NOT-IMPLEMENTED]
+windows-integration: install  ## windows integration tests [NOT-IMPLEMENTED]
 	$(ANSIBLE_TEST) windows-integration --requirements
 
 shell:  ## open an interactive shell
