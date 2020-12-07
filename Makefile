@@ -6,9 +6,14 @@ PIP ?= PIP_DISABLE_VERSION_CHECK=1 $(PYTHON) -m pip
 
 .EXPORT_ALL_VARIABLES:
 
+NAMESPACE := $(shell $(PYTHON) -c "import yaml; print(yaml.safe_load(open('galaxy.yml').read())['namespace'])")
+COLLECTION := $(shell $(PYTHON) -c "import yaml; print(yaml.safe_load(open('galaxy.yml').read())['name'])")
+VERSION := $(shell $(PYTHON) -c "import yaml; print(yaml.safe_load(open('galaxy.yml').read())['version'])")
+
 ANSIBLE_COLLECTIONS_PATH = $(HOME)/.ansible/collections/ansible_collections
-ANSIBLE_TEST = cd $(ANSIBLE_COLLECTIONS_PATH)/pycontribs/protogen && ansible-test
+ANSIBLE_TEST = cd $(ANSIBLE_COLLECTIONS_PATH)/$(NAMESPACE)/$(COLLECTION) && ansible-test
 ANSIBLE := $(shell command -v ansible)
+
 
 .PHONY: test sanity units env integration shell coverage network-integration windows-integration lint default help build install devenv
 
@@ -43,15 +48,16 @@ endif
 	python3 -m pip install --user wheel
 
 build: devenv  ## Builds collection
+	@echo === build collection: $(NAMESPACE).$(COLLECTION) $(VERSION) ===
+	exit
 	sh -c "rm -rf dist/* .cache/collections/* || true"
-	@echo build collection
 	ansible-galaxy collection build -v -f --output-path dist/
 
 install: build  ## Installs collection
 	@echo install collection to $(ANSIBLE_COLLECTIONS_PATH)
 	ansible-galaxy collection install -f dist/*.tar.gz -p $(ANSIBLE_COLLECTIONS_PATH)
 	@echo validates that collection is reported as installed
-	ansible-galaxy collection list | grep 'pycontribs.protogen'
+	ansible-galaxy collection list | grep '$(NAMESPACE).$(COLLECTION)'
 
 test:  ## Runs ansible-test
 	$(ANSIBLE_TEST) ansible-test --help
