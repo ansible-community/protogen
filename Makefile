@@ -65,8 +65,8 @@ sanity: install  ## Runs ansible-test sanity
 units: install  ## Runs ansible-test units
 	$(ANSIBLE_TEST) units --requirements --python $(PYTHON_VERSION)
 
-integration: install  ## posix integration tests [NOT-IMPLEMENTED]
-	$(ANSIBLE_TEST) integration --requirements
+integration: install  ## posix integration tests
+	$(ANSIBLE_TEST) integration --requirements --python $(PYTHON_VERSION)
 
 network-integration: install  ## network integration tests [NOT-IMPLEMENTED]
 	$(ANSIBLE_TEST) network-integration --requirements
@@ -79,6 +79,7 @@ shell:  ## open an interactive shell
 
 coverage: units ## code coverage management and reporting
 	$(ANSIBLE_TEST) units --requirements --python $(PYTHON_VERSION) --coverage
+	$(ANSIBLE_TEST) integration --requirements --python $(PYTHON_VERSION) --coverage
 	$(ANSIBLE_TEST) coverage combine
 	$(ANSIBLE_TEST) coverage report
 

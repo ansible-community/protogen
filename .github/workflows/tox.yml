@@ -22,7 +22,7 @@ jobs:
         include:
           - name: sanity
           - name: units
-          # - name: integration
+          - name: integration
           - name: coverage
     steps:
       - uses: actions/checkout@v1
