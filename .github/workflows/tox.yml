@@ -62,6 +62,8 @@ jobs:
           # will be able to install collection being tested:
           # https://github.com/ansible-community/molecule/pull/2998
           - tox_env: molecule
+          - tox_env: sanity
+          - tox_env: units
 
     steps:
       - uses: actions/checkout@v1
