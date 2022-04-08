@@ -53,6 +53,7 @@ issues: https://github.com/ansible-community/issues
 
 # that key is not even part of the template:
 build_ignore:
+  - .ansible
   - .cache
   - .github
   - .gitignore
