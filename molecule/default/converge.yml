@@ -6,5 +6,5 @@
     - pycontribs.protogen
   tasks:
     - name: "Include ensure_welcome"
-      include_role:
+      ansible.builtin.include_role:
         name: "ensure_welcome"

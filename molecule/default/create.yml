@@ -8,10 +8,11 @@
 
     # TODO: Developer must implement and populate 'server' variable
 
-    - when: server.changed | default(false) | bool
+    - name: Perform actions if needed
+      when: server.changed | default(false) | bool  # noqa: no-handler
       block:
         - name: Populate instance config dict
-          set_fact:
+          ansible.builtin.set_fact:
             instance_conf_dict: {
               'instance': "{{ }}",
               'address': "{{ }}",
@@ -22,11 +23,11 @@
           register: instance_config_dict
 
         - name: Convert instance config dict to a list
-          set_fact:
+          ansible.builtin.set_fact:
             instance_conf: "{{ instance_config_dict.results | map(attribute='ansible_facts.instance_conf_dict') | list }}"
 
         - name: Dump instance config
-          copy:
+          ansible.builtin.copy:
             content: |
               # Molecule managed
 
